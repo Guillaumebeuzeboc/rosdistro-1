@@ -62,7 +62,10 @@ class DependencyWalker(object):
 
     def get_depends(self, pkg_name, depend_type, ros_packages_only=False):
         '''Return a set of package names which the package depends on.'''
-        deps = self._get_dependencies(pkg_name, depend_type)
+        deps = set()
+        # We can only get the dependencies of ROS packages
+        if pkg_name in self._get_package_names():
+          deps = self._get_dependencies(pkg_name, depend_type)
         if ros_packages_only:
             deps &= set(self._get_package_names())
         return deps
